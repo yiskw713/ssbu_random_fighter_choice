@@ -168,7 +168,6 @@ const displayName = [
 ]
 
 const numFighters = fighters.length;
-const winner = Math.floor(Math.random() * numFighters);
 const candidate = document.getElementById("container");
 const bannedFighters = new Set();
 
@@ -212,3 +211,63 @@ for (let i = 0; i < numFighters; i++) {
 
     candidate.appendChild(boxDiv);
 }
+
+
+
+const winner = Math.floor(Math.random() * numFighters);
+
+// buttonがクリックされた時にキャラクターを選ぶ
+const button = document.getElementById("button");
+
+button.addEventListener("click", () => {
+    const selectedFighters = [];
+    const selected = document.getElementById("selected");
+
+    // radio button の値を取得
+    const radioButton = document.getElementsByName("radio");
+    let numSelectedFighters = 1
+
+    // 選択状態の値を取得
+    for (let i = 0; i < 3; i++) {
+        if (radioButton[i].checked) {
+            numSelectedFighters = radioButton[i].value;
+            break;
+        }
+    }
+
+    while (selectedFighters.length < numSelectedFighters) {
+        const i = Math.floor(Math.random() * numFighters);
+        if ((bannedFighters.has(i)) || (selectedFighters.includes(i))) {
+            continue;
+        } else {
+            //ファイターを表示
+            // 全体
+            const boxDiv = document.createElement("div");
+
+            // 画像をいれる
+            const imgDiv = document.createElement("div");
+
+            const img = document.createElement("img");
+            // 画像のパス
+            img.src = "./icon_imgs/" + fighters[i] + ".png";
+
+            // 画像を追加
+            imgDiv.appendChild(img);
+
+            // クラスの付与
+            imgDiv.classList.add("imgBox")
+
+            // fighter名の追加
+            const p = document.createElement("p");
+            p.textContent = displayName[i].toUpperCase();
+
+            boxDiv.appendChild(imgDiv)
+            boxDiv.appendChild(p);
+            boxDiv.classList.add("box");
+
+            selected.appendChild(boxDiv);
+
+            selectedFighters.push(i);
+        }
+    }
+});

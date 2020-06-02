@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+
     <title>
         Random Fighter Choice for SSBU
     </title>
@@ -16,6 +17,24 @@
             height: 50px;
             text-align: center;
         }
+
+        /* radio button */
+        #checkbox h3 {
+            margin: 30px auto;
+            height: 10px;
+            line-height: 1.2;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .button {
+            margin: 10px auto;
+            background-color: white;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        /* end button */
 
         #container {
             margin: 0px auto;
@@ -50,7 +69,7 @@
         }
 
         .imgBox img:hover {
-            transform: scale(1.15);
+            transform: scale(1.2);
         }
 
         .box p {
@@ -65,6 +84,13 @@
 
         .clickedImgBox {
             transform: rotate(360deg);
+        }
+
+        #selected {
+            margin: 0 auto;
+            width: 100%;
+            height: 200px;
+            text-align: center;
         }
 
         footer {
@@ -86,12 +112,31 @@
     </header>
 
     <div id="container">
-        <h2>
-            Click fighters you want to ban!
-        </h2>
+        <div id="checkbox">
+            <!-- キャラクターの数 -->
+
+            <h3>the number of fighters</h3>
+            <p class="button">
+                <input name="radio" type="radio" value=1 checked> 1
+                <input name="radio" type="radio" value=3> 3
+                <input name="radio" type="radio" value=5> 5
+            </p>
+
+            <p class="button" id="button">
+                <button type="button">
+                    random
+                </button>
+            </p>
+
+        </div>
+
         <div id="selected">
 
         </div>
+
+        <h2>
+            Click fighters you want to ban!
+        </h2>
 
         <div id="candidate">
 
