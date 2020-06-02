@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        Random Fighter Choice for SSBU
+    </title>
+
+    <style>
+        .title {
+            margin: 0 auto;
+            padding: 30px 0px 0px 0px;
+            font-size: 32px;
+            width: 100%;
+            height: 50px;
+            text-align: center;
+        }
+
+        #container {
+            margin: 0px auto;
+            width: 100%;
+        }
+
+        #container h2 {
+            width: 100%;
+            text-align: center;
+        }
+
+        .box {
+            width: 100px;
+            height: 100px;
+            text-align: center;
+            float: left;
+            margin: 5px 10px;
+            transition: 0.8s;
+        }
+
+        .imgBox {
+            width: 100%;
+            height: 80%;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.8s;
+        }
+
+        .imgBox img {
+            width: 80%;
+            transition: 1.2s;
+        }
+
+        .imgBox img:hover {
+            transform: scale(1.15);
+        }
+
+        .box p {
+            margin: 0 auto;
+            text-align: center;
+            font-size: 10px
+        }
+
+        .clicked {
+            background-color: pink;
+        }
+
+        .clickedImgBox {
+            transform: rotate(360deg);
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 10px;
+            text-align: right;
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!--タイトル-->
+    <header>
+        <h1 class="title">Random Fighter Choice for SSBU</h1>
+    </header>
+
+    <div id="container">
+        <h2>
+            Click fighters you want to ban!
+        </h2>
+        <div id="selected">
+
+        </div>
+
+        <div id="candidate">
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
