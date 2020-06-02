@@ -170,6 +170,7 @@ const displayName = [
 const numFighters = fighters.length;
 const candidate = document.getElementById("container");
 const bannedFighters = new Set();
+let numBannedFighters = 0;
 
 for (let i = 0; i < numFighters; i++) {
     // 全体
@@ -198,10 +199,12 @@ for (let i = 0; i < numFighters; i++) {
             boxDiv.classList.remove("clicked");
             imgDiv.classList.remove("clickedImgBox");
             bannedFighters.delete(i);
+            numBannedFighters -= 1;
         } else {
             boxDiv.classList.add("clicked");
             imgDiv.classList.add("clickedImgBox");
             bannedFighters.add(i);
+            numBannedFighters += 1;
         }
     });
 
@@ -223,6 +226,11 @@ button.addEventListener("click", () => {
     const selectedFighters = [];
     const selected = document.getElementById("selected");
 
+    // もし個要素が存在したら削除
+    while (selected.firstChild) {
+        selected.removeChild(selected.firstChild);
+    }
+
     // radio button の値を取得
     const radioButton = document.getElementsByName("radio");
     let numSelectedFighters = 1
@@ -233,6 +241,14 @@ button.addEventListener("click", () => {
             numSelectedFighters = radioButton[i].value;
             break;
         }
+    }
+
+    // もし指定された個数文表示できなかったら
+    const numAvailable = numFighters - numBannedFighters;
+    if (numAvailable < numSelectedFighters) {
+        const numUnbanned = numSelectedFighters - numAvailable;
+        alert(`You have to unban at least ${numUnbanned} fighters`);
+        return
     }
 
     while (selectedFighters.length < numSelectedFighters) {
