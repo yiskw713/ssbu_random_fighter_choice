@@ -3,145 +3,85 @@
 
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <!-- font awesome -->
+    <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+    <!-- lato font -->
+    <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet'>
 
     <title>
         Random Fighter Choice for SSBU
     </title>
-
-    <style>
-        .title {
-            margin: 0 auto;
-            padding: 30px 0px 0px 0px;
-            font-size: 32px;
-            width: 100%;
-            height: 50px;
-            text-align: center;
-        }
-
-        /* radio button */
-        #checkbox h3 {
-            margin: 30px auto;
-            height: 10px;
-            line-height: 1.2;
-            text-align: center;
-            font-size: 24px;
-        }
-
-        .button {
-            margin: 10px auto;
-            background-color: white;
-            font-size: 20px;
-            text-align: center;
-        }
-
-        /* end button */
-
-        #container {
-            margin: 0px auto;
-            width: 100%;
-        }
-
-        #container h2 {
-            width: 100%;
-            text-align: center;
-        }
-
-        .box {
-            width: 100px;
-            height: 100px;
-            text-align: center;
-            float: left;
-            margin: 5px 10px;
-            transition: 0.8s;
-        }
-
-        .imgBox {
-            width: 100%;
-            height: 80%;
-            cursor: pointer;
-            text-align: center;
-            transition: 0.8s;
-        }
-
-        .imgBox img {
-            width: 80%;
-            transition: 1.2s;
-        }
-
-        .imgBox img:hover {
-            transform: scale(1.2);
-        }
-
-        .box p {
-            margin: 0 auto;
-            text-align: center;
-            font-size: 10px
-        }
-
-        .clicked {
-            background-color: pink;
-        }
-
-        .clickedImgBox {
-            transform: rotate(360deg);
-        }
-
-        #selected {
-            margin: 0 auto;
-            width: 100%;
-            height: 100px;
-            text-align: center;
-        }
-
-        footer {
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 10px;
-            text-align: right;
-            background-color: red;
-        }
-    </style>
 </head>
 
 <body>
 
     <!--タイトル-->
     <header>
-        <h1 class="title">Random Fighter Choice for SSBU</h1>
+        <div class="container">
+            <h1 class="title">Random Fighter Choice for SSBU</h1>
+        </div>
     </header>
 
-    <div id="container">
-        <div id="checkbox">
-            <!-- キャラクターの数 -->
+    <main>
+        <div class="container">
+            <!-- チェックボックス -->
+            <div class="checkbox">
+                <h2>the number of fighters</h2>
+                <p class="radio">
+                    <input name="radio" type="radio" value=1 checked> 1
+                    <input name="radio" type="radio" value=3> 3
+                    <input name="radio" type="radio" value=5> 5
+                </p>
 
-            <h3>the number of fighters</h3>
-            <p class="button">
-                <input name="radio" type="radio" value=1 checked> 1
-                <input name="radio" type="radio" value=3> 3
-                <input name="radio" type="radio" value=5> 5
-            </p>
+                <p class="button">
+                    <button type="button" id="randomButton">
+                        Random
+                    </button>
+                </p>
+            </div>
 
-            <p class="button" id="button">
-                <button type="button">
-                    random
-                </button>
-            </p>
+            <!-- リザルトボックス -->
+            <div class="result" id="result">
+                <ul class="fighterList" id="resultList">
 
+                </ul>
+
+            </div>
+
+            <!-- キャラ選択 -->
+            <div class="selection">
+                <h2>
+                    Click fighters you want to ban!
+                </h2>
+
+                <p class="button">
+                    <button type="button" id="allButton">
+                        Ban All Fighters
+                    </button>
+                    <button type="button" id="resetButton">
+                        Reset
+                    </button>
+                </p>
+            </div>
+
+            <div class="candidate">
+                <ul class="fighterList" id="candidateList">
+
+                </ul>
+            </div>
+    </main>
+
+
+    <footer>
+        <div class="container">
+            <div class="copyright">
+                <a href="https://github.com/yiskw713/ssbu_random_fighter_choice" target="_blank">
+                    <i class="fab fa-github"></i> GitHub by yiskw713
+                </a>
+            </div>
         </div>
-
-        <div id="selected">
-
-        </div>
-
-        <h2>
-            Click fighters you want to ban!
-        </h2>
-
-        <div id="candidate">
-
-        </div>
-    </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>

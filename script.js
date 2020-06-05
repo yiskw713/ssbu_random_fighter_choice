@@ -133,7 +133,7 @@ const displayName = [
     "toon link",
     "wolf",
     "villager",
-    "mega_man",
+    "mega man",
     "wii fit trainer",
     "rosalina & luma",
     "little mac",
@@ -168,13 +168,14 @@ const displayName = [
 ]
 
 const numFighters = fighters.length;
-const candidate = document.getElementById("container");
+const candidate = document.getElementById("candidateList");
 const bannedFighters = new Set();
 let numBannedFighters = 0;
 
-for (let i = 0; i < numFighters; i++) {
+// i番目のキャラクターボックスを作成
+const makeFighterBox = (i) => {
     // 全体
-    const boxDiv = document.createElement("div");
+    const fighterBox = document.createElement("div");
 
     // 画像をいれる
     const imgDiv = document.createElement("div");
@@ -192,43 +193,49 @@ for (let i = 0; i < numFighters; i++) {
     // fighter名の追加
     const p = document.createElement("p");
     p.textContent = displayName[i].toUpperCase();
+    p.classList.add("nameBox");
+
+    fighterBox.appendChild(imgDiv)
+    fighterBox.appendChild(p);
+    fighterBox.classList.add("fighterBox");
+
+    return fighterBox
+}
+
+// 初期化
+for (let i = 0; i < numFighters; i++) {
+    const li = document.createElement("li");
+
+    const fighterBox = makeFighterBox(i);
 
     // クリックしたら色をつける
-    boxDiv.addEventListener("click", () => {
-        if (boxDiv.classList.contains("clicked")) {
-            boxDiv.classList.remove("clicked");
-            imgDiv.classList.remove("clickedImgBox");
+    fighterBox.addEventListener("click", () => {
+        if (fighterBox.classList.contains("clicked")) {
+            fighterBox.classList.remove("clicked");
             bannedFighters.delete(i);
             numBannedFighters -= 1;
         } else {
-            boxDiv.classList.add("clicked");
-            imgDiv.classList.add("clickedImgBox");
+            fighterBox.classList.add("clicked");
             bannedFighters.add(i);
             numBannedFighters += 1;
         }
     });
 
-    boxDiv.appendChild(imgDiv)
-    boxDiv.appendChild(p);
-    boxDiv.classList.add("box");
+    li.appendChild(fighterBox);
 
-    candidate.appendChild(boxDiv);
+    candidate.appendChild(li);
 }
 
-
-
-const winner = Math.floor(Math.random() * numFighters);
-
 // buttonがクリックされた時にキャラクターを選ぶ
-const button = document.getElementById("button");
+const randomButton = document.getElementById("randomButton");
 
-button.addEventListener("click", () => {
+randomButton.addEventListener("click", () => {
     const selectedFighters = [];
-    const selected = document.getElementById("selected");
+    const result = document.getElementById("resultList");
 
-    // もし個要素が存在したら削除
-    while (selected.firstChild) {
-        selected.removeChild(selected.firstChild);
+    // もし子要素が存在したら削除
+    while (result.firstChild) {
+        result.removeChild(result.firstChild);
     }
 
     // radio button の値を取得
@@ -247,8 +254,13 @@ button.addEventListener("click", () => {
     const numAvailable = numFighters - numBannedFighters;
     if (numAvailable < numSelectedFighters) {
         const numUnbanned = numSelectedFighters - numAvailable;
-        alert(`You have to unban at least ${numUnbanned} fighters`);
-        return
+        if (numUnbanned === 1) {
+            alert(`You have to unban at least 1 fighter`);
+            return
+        } else {
+            alert(`You have to unban at least ${numUnbanned} fighters`);
+            return
+        }
     }
 
     while (selectedFighters.length < numSelectedFighters) {
@@ -256,34 +268,53 @@ button.addEventListener("click", () => {
         if ((bannedFighters.has(i)) || (selectedFighters.includes(i))) {
             continue;
         } else {
-            //ファイターを表示
-            // 全体
-            const boxDiv = document.createElement("div");
+            // キャラクタボックスを作成
+            const fighterBox = makeFighterBox(i);
 
-            // 画像をいれる
-            const imgDiv = document.createElement("div");
-
-            const img = document.createElement("img");
-            // 画像のパス
-            img.src = "./icon_imgs/" + fighters[i] + ".png";
-
-            // 画像を追加
-            imgDiv.appendChild(img);
-
-            // クラスの付与
-            imgDiv.classList.add("imgBox")
-
-            // fighter名の追加
-            const p = document.createElement("p");
-            p.textContent = displayName[i].toUpperCase();
-
-            boxDiv.appendChild(imgDiv)
-            boxDiv.appendChild(p);
-            boxDiv.classList.add("box");
-
-            selected.appendChild(boxDiv);
+            result.appendChild(fighterBox);
 
             selectedFighters.push(i);
         }
     }
 });
+
+
+// allButtonがクリックされたら全てのiconをbanする
+const banAllFighters = () => {
+    const candidateChildren = candidate.children;
+    for (let i = 0; i < numFighters; i++) {
+        if (bannedFighters.has(i)) {
+            continue;
+        } else {
+            const child = candidateChildren[i];
+            bannedFighters.add(i);
+            numBannedFighters += 1;
+
+            // clicked classの付与
+            const boxDiv = child.children[0];
+            boxDiv.classList.add("clicked");
+        }
+    }
+}
+
+const allButton = document.getElementById("allButton");
+allButton.addEventListener("click", banAllFighters);
+
+// resetButtonがクリックされたら全てのiconをunbanする
+const reset = () => {
+    const candidateChildren = candidate.children;
+    for (let i = 0; i < numFighters; i++) {
+        if (bannedFighters.has(i)) {
+            const child = candidateChildren[i];
+            bannedFighters.delete(i);
+            numBannedFighters -= 1;
+
+            // clicked classを削除
+            const boxDiv = child.children[0];
+            boxDiv.classList.remove("clicked");
+        }
+    }
+}
+
+const resetButton = document.getElementById("resetButton");
+resetButton.addEventListener("click", reset);
