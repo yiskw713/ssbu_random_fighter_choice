@@ -314,24 +314,51 @@ randomButton.addEventListener("click", () => {
 
                 // 使用済みキャラに追加
                 usedFighters.add(i);
-                fighterBoxes[i].classList.add("used");
             }
         }
     }
 });
 
-const historyCheckbox = document.getElementById("historyCheckbox");
-const allButton = document.getElementById("allButton");
-const unbanButton = document.getElementById("unbanButton");
-const deleteHistoryButton = document.getElementById("deleteHistoryButton");
-const resetButton = document.getElementById("resetButton");
+// historyを使う場合は，used class を付与
+const addUsedClass = (i) => {
+    const candidateChildren = candidate.children;
+    if (usedFighters.has(i)) {
+        const child = candidateChildren[i];
+
+        // used class を削除
+        const boxDiv = child.children[0];
+        boxDiv.classList.add("used");
+    }
+
+    return;
+}
+
+// historyを使わない場合は，used class を削除する．set型の中身は消さない
+const removeUsedClass = (i) => {
+    const candidateChildren = candidate.children;
+    if (usedFighters.has(i)) {
+        const child = candidateChildren[i];
+
+        // used class を削除
+        const boxDiv = child.children[0];
+        boxDiv.classList.remove("used");
+    }
+
+    return;
+}
 
 // historyを使うかどうか
 const checkIfUseHistory = () => {
     if (historyCheckbox.checked) {
         useHistory = true;
+        for (let i = 0; i < numFighters; i++) {
+            addUsedClass(i);
+        }
     } else {
         useHistory = false;
+        for (let i = 0; i < numFighters; i++) {
+            removeUsedClass(i);
+        }
     }
 }
 
@@ -387,18 +414,30 @@ const unban = () => {
 
 // historyを削除する
 const deleteHistory = () => {
-    for (let i = 0; i < numFighters; i++) {
-        deleteIthFighterHistory(i);
+    const result = confirm("Are you sure you want to delete history?")
+    if (result) {
+        for (let i = 0; i < numFighters; i++) {
+            deleteIthFighterHistory(i);
+        }
     }
 }
 
 // resetButtonがクリックされたら全てのiconをunbanする
 const reset = () => {
-    for (let i = 0; i < numFighters; i++) {
-        unbanIthFighter(i);
-        deleteIthFighterHistory(i);
+    const result = confirm("Are you sure you want to reset?")
+    if (result) {
+        for (let i = 0; i < numFighters; i++) {
+            unbanIthFighter(i);
+            deleteIthFighterHistory(i);
+        }
     }
 }
+
+const historyCheckbox = document.getElementById("historyCheckbox");
+const allButton = document.getElementById("allButton");
+const unbanButton = document.getElementById("unbanButton");
+const deleteHistoryButton = document.getElementById("deleteHistoryButton");
+const resetButton = document.getElementById("resetButton");
 
 historyCheckbox.addEventListener("click", checkIfUseHistory);
 allButton.addEventListener("click", banAllFighters);
