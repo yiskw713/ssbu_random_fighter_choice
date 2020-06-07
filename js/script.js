@@ -173,6 +173,30 @@ const bannedFighters = new Set();
 const usedFighters = new Set();
 let useHistory = false;
 
+// 起動時に設定言語を変更する
+window.onload = function () {
+    let language;
+
+    if (navigator.browserLanguage != null) {
+        // Internet Explorer, Opera, 他  
+        language = navigator.browserLanguage.substr(0, 2);
+    } else if (navigator.userLanguage != null) {
+        // Internet Explorerの場合  
+        language = navigator.userLanguage.substr(0, 2);
+    } else if (navigator.language != null) {
+        // Chrome, Firefox, Opera, 他  
+        language = navigator.language.substr(0, 2);
+    } else {
+        // その他  
+        language = "ja";
+    }
+
+    language = "en";
+    console.log(language);
+
+    setLanguage(language);
+}
+
 // キャラクタボックスの配列
 const fighterBoxes = [];
 
@@ -229,7 +253,6 @@ for (let i = 0; i < numFighters; i++) {
 
     candidate.appendChild(li);
 }
-
 
 // buttonがクリックされた時にキャラクターを選ぶ
 const randomButton = document.getElementById("randomButton");
