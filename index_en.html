@@ -20,7 +20,7 @@
     </script>
 
     <title>
-        スマブラSP キャラおまかせ
+        Random Fighter Selection for SSBU
     </title>
     <meta name="description" content="Random Fighter Selection for SSBU" />
 
@@ -32,9 +32,9 @@
     <!--タイトル-->
     <header>
         <div class="container">
-            <a href="index_en.html" style="float:right">English</a>
+            <a href="index.html" style="float:right">日本語</a>
             <h1 class="title">
-                スマブラSP キャラおまかせ
+                Random Fighter Selection for SSBU
             </h1>
         </div>
     </header>
@@ -43,7 +43,7 @@
         <div class="container">
             <!-- チェックボックス -->
             <div class="checkbox">
-                <h2>選ぶキャラクターの数</h2>
+                <h2>the number of fighters</h2>
                 <p class="radio">
                     <input name="radio" type="radio" value=1 checked> 1
                     <input name="radio" type="radio" value=3> 3
@@ -52,7 +52,7 @@
 
                 <p class="button">
                     <button type="button" id="randomButton">
-                        おまかせ
+                        Random
                     </button>
                 </p>
             </div>
@@ -60,6 +60,7 @@
             <!-- リザルトボックス -->
             <div class="result" id="result">
                 <ul class="fighterList" id="resultList">
+
                 </ul>
 
             </div>
@@ -67,33 +68,33 @@
             <!-- キャラ選択 -->
             <div class="selection">
                 <h2>
-                    使いたくないキャラをクリック！
+                    Click fighters you want to ban!
                 </h2>
 
                 <p class="button">
                     <button type="button" id="allButton">
-                        全キャラ除外
+                        Ban All
                     </button>
                     <button type="button" id="unbanButton">
-                        全キャラ使用
+                        Unban All
                     </button>
                     <button type="button" id="deleteHistoryButton">
-                        履歴を削除
+                        Delete History
                     </button>
                     <button type="button" id="resetButton">
-                        リセット
+                        Reset All
                     </button>
                 </p>
 
                 <p class="button">
                     <input type="checkbox" id="historyCheckbox" value="Use Fighter History">
-                    一度出たキャラは使用しない
+                    Remove Fighters Used Once
                     </input>
                 </p>
 
                 <div class="colorExplanation">
-                    <p class="pink ">除外</p>
-                    <p class="lightcyan ">使用済</p>
+                    <p class="pink ">Banned</p>
+                    <p class="lightcyan ">Used</p>
                 </div>
 
             </div>
