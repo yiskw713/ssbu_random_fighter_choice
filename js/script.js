@@ -433,7 +433,13 @@ const unbanAllFighters = () => {
 
 // historyを削除する
 const deleteHistory = () => {
-    const result = confirm("Are you sure you want to delete history?")
+    let result;
+    const fileName = getFileName();
+    if (fileName === "index_en.html") {
+        result = confirm("Are you sure you want to delete history?")
+    } else {
+        result = confirm("履歴を削除してよろしいですか？")
+    }
     if (result) {
         for (let i = 0; i < numFighters; i++) {
             deleteIthFighterHistory(i);
@@ -443,7 +449,14 @@ const deleteHistory = () => {
 
 // resetButtonがクリックされたら全てのiconをunbanする
 const reset = () => {
-    const result = confirm("Are you sure you want to reset?")
+    let result;
+    const fileName = getFileName();
+    if (fileName === "index_en.html") {
+        result = confirm("Are you sure you want to reset?")
+    } else {
+        result = confirm("リセットしてよろしいですか？")
+    }
+
     if (result) {
         for (let i = 0; i < numFighters; i++) {
             unbanIthFighter(i);
@@ -479,8 +492,6 @@ const getCookie = () => {
         }
     }
 
-    console.log(bannedFighters);
-
     // clicked, used クラスを付与
     for (let i = 0; i < numFighters; i++) {
         if (bannedFighters.has(i)) {
@@ -504,5 +515,11 @@ getCookie();
 historyCheckbox.addEventListener("click", checkIfUseHistory);
 allButton.addEventListener("click", banAllFighters);
 unbanButton.addEventListener("click", unbanAllFighters);
-deleteHistoryButton.addEventListener("click", deleteHistory);
-resetButton.addEventListener("click", reset);
+deleteHistoryButton.addEventListener("click", () => {
+    deleteHistory();
+    setCookie();
+});
+resetButton.addEventListener("click", () => {
+    reset();
+    setCookie();
+});
