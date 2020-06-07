@@ -45,17 +45,48 @@
   margin: 0px auto;
   background-color: white;
   text-align: center;
-  padding: 7px 0px;
+  padding: 5px 0px;
+  height: 32px;
 }
 
 .button button {
-  margin: 0 5px;
+  margin: 0 20px;
+  font-size: 16px;
+}
+
+.button input {
+  font-size: 16px;
+}
+
+.colorExplanation {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.colorExplanation p {
+  width: 60px;
+  margin: 10px 20px;
+  padding: 5px 5px;
+  font-size: 16px;
+  text-align: center;
+  line-height: 16px;
+}
+
+.colorExplanation .pink {
+  background-color: pink;
+}
+
+.colorExplanation .lightcyan {
+  background-color: lightcyan;
 }
 
 /* リザルトボックス */
 .result {
   width: 100%;
-  height: 150px;
   margin: 0 auto;
   text-align: center;
 }
@@ -127,6 +158,21 @@
           transform: scale(0.6);
 }
 
+.used {
+  background-color: lightcyan;
+  border-radius: 10px;
+}
+
+.used .imgBox {
+  -webkit-transform: rotate(-360deg);
+          transform: rotate(-360deg);
+}
+
+.used .imgBox img {
+  -webkit-transform: scale(0.6);
+          transform: scale(0.6);
+}
+
 .selection {
   width: 100%;
 }
@@ -134,8 +180,9 @@
 .selection h2 {
   margin: 0 auto;
   font-size: 20px;
-  padding: 5px 0;
+  padding: 5px 0 15px 0;
   text-align: center;
+  font-size: 24px;
 }
 
 .candidate {

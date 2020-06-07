@@ -170,7 +170,11 @@ const displayName = [
 const numFighters = fighters.length;
 const candidate = document.getElementById("candidateList");
 const bannedFighters = new Set();
-let numBannedFighters = 0;
+const usedFighters = new Set();
+let useHistory = false;
+
+// キャラクタボックスの配列
+const fighterBoxes = [];
 
 // i番目のキャラクターボックスを作成
 const makeFighterBox = (i) => {
@@ -199,6 +203,8 @@ const makeFighterBox = (i) => {
     fighterBox.appendChild(p);
     fighterBox.classList.add("fighterBox");
 
+    fighterBoxes.push(fighterBox);
+
     return fighterBox
 }
 
@@ -213,11 +219,9 @@ for (let i = 0; i < numFighters; i++) {
         if (fighterBox.classList.contains("clicked")) {
             fighterBox.classList.remove("clicked");
             bannedFighters.delete(i);
-            numBannedFighters -= 1;
         } else {
             fighterBox.classList.add("clicked");
             bannedFighters.add(i);
-            numBannedFighters += 1;
         }
     });
 
@@ -225,6 +229,7 @@ for (let i = 0; i < numFighters; i++) {
 
     candidate.appendChild(li);
 }
+
 
 // buttonがクリックされた時にキャラクターを選ぶ
 const randomButton = document.getElementById("randomButton");
@@ -251,33 +256,111 @@ randomButton.addEventListener("click", () => {
     }
 
     // もし指定された個数文表示できなかったら
-    const numAvailable = numFighters - numBannedFighters;
+    const union = new Set([...bannedFighters, ...usedFighters]);
+    const numAvailable = useHistory ? numFighters - union.size : numFighters - bannedFighters.size;
+
     if (numAvailable < numSelectedFighters) {
         const numUnbanned = numSelectedFighters - numAvailable;
-        if (numUnbanned === 1) {
-            alert(`You have to unban at least 1 fighter`);
-            return
+        if (useHistory) {
+            if (numUnbanned === 1) {
+                alert(`You have to unban at least 1 fighter or reset your history.`);
+                return
+            } else {
+                alert(`You have to unban at least ${numUnbanned} fighters or reset your history.`);
+                return
+            }
         } else {
-            alert(`You have to unban at least ${numUnbanned} fighters`);
-            return
+            if (numUnbanned === 1) {
+                alert(`You have to unban at least 1 fighter.`);
+                return
+            } else {
+                alert(`You have to unban at least ${numUnbanned} fighters.`);
+                return
+            }
         }
+
     }
 
     while (selectedFighters.length < numSelectedFighters) {
         const i = Math.floor(Math.random() * numFighters);
-        if ((bannedFighters.has(i)) || (selectedFighters.includes(i))) {
-            continue;
-        } else {
-            // キャラクタボックスを作成
-            const fighterBox = makeFighterBox(i);
+        if (useHistory) {
+            if (bannedFighters.has(i) || selectedFighters.includes(i) || usedFighters.has(i)) {
+                continue;
+            } else {
+                // キャラクタボックスを作成
+                const fighterBox = makeFighterBox(i);
 
-            result.appendChild(fighterBox);
+                result.appendChild(fighterBox);
 
-            selectedFighters.push(i);
+                // 決定済みキャラに追加
+                selectedFighters.push(i);
+
+                // 使用済みキャラに追加
+                usedFighters.add(i);
+                fighterBoxes[i].classList.add("used");
+            }
+        }
+        else {
+            if (bannedFighters.has(i) || selectedFighters.includes(i)) {
+                continue;
+            } else {
+                // キャラクタボックスを作成
+                const fighterBox = makeFighterBox(i);
+
+                result.appendChild(fighterBox);
+
+                // 決定済みキャラに追加
+                selectedFighters.push(i);
+
+                // 使用済みキャラに追加
+                usedFighters.add(i);
+            }
         }
     }
 });
 
+// historyを使う場合は，used class を付与
+const addUsedClass = (i) => {
+    const candidateChildren = candidate.children;
+    if (usedFighters.has(i)) {
+        const child = candidateChildren[i];
+
+        // used class を削除
+        const boxDiv = child.children[0];
+        boxDiv.classList.add("used");
+    }
+
+    return;
+}
+
+// historyを使わない場合は，used class を削除する．set型の中身は消さない
+const removeUsedClass = (i) => {
+    const candidateChildren = candidate.children;
+    if (usedFighters.has(i)) {
+        const child = candidateChildren[i];
+
+        // used class を削除
+        const boxDiv = child.children[0];
+        boxDiv.classList.remove("used");
+    }
+
+    return;
+}
+
+// historyを使うかどうか
+const checkIfUseHistory = () => {
+    if (historyCheckbox.checked) {
+        useHistory = true;
+        for (let i = 0; i < numFighters; i++) {
+            addUsedClass(i);
+        }
+    } else {
+        useHistory = false;
+        for (let i = 0; i < numFighters; i++) {
+            removeUsedClass(i);
+        }
+    }
+}
 
 // allButtonがクリックされたら全てのiconをbanする
 const banAllFighters = () => {
@@ -288,7 +371,6 @@ const banAllFighters = () => {
         } else {
             const child = candidateChildren[i];
             bannedFighters.add(i);
-            numBannedFighters += 1;
 
             // clicked classの付与
             const boxDiv = child.children[0];
@@ -297,24 +379,68 @@ const banAllFighters = () => {
     }
 }
 
-const allButton = document.getElementById("allButton");
-allButton.addEventListener("click", banAllFighters);
-
-// resetButtonがクリックされたら全てのiconをunbanする
-const reset = () => {
+// i番目のキャラクターをunbanする関数
+const unbanIthFighter = (i) => {
     const candidateChildren = candidate.children;
-    for (let i = 0; i < numFighters; i++) {
-        if (bannedFighters.has(i)) {
-            const child = candidateChildren[i];
-            bannedFighters.delete(i);
-            numBannedFighters -= 1;
+    if (bannedFighters.has(i)) {
+        const child = candidateChildren[i];
+        bannedFighters.delete(i);
 
-            // clicked classを削除
-            const boxDiv = child.children[0];
-            boxDiv.classList.remove("clicked");
+        // clicked classを削除
+        const boxDiv = child.children[0];
+        boxDiv.classList.remove("clicked");
+    }
+}
+
+// i番目のキャラクターのhistoryを削除する関数
+const deleteIthFighterHistory = (i) => {
+    const candidateChildren = candidate.children;
+    if (usedFighters.has(i)) {
+        const child = candidateChildren[i];
+        usedFighters.delete(i);
+
+        // used class を削除
+        const boxDiv = child.children[0];
+        boxDiv.classList.remove("used");
+    }
+}
+
+// 全てのキャラクターをunbanする
+const unban = () => {
+    for (let i = 0; i < numFighters; i++) {
+        unbanIthFighter(i);
+    }
+}
+
+// historyを削除する
+const deleteHistory = () => {
+    const result = confirm("Are you sure you want to delete history?")
+    if (result) {
+        for (let i = 0; i < numFighters; i++) {
+            deleteIthFighterHistory(i);
         }
     }
 }
 
+// resetButtonがクリックされたら全てのiconをunbanする
+const reset = () => {
+    const result = confirm("Are you sure you want to reset?")
+    if (result) {
+        for (let i = 0; i < numFighters; i++) {
+            unbanIthFighter(i);
+            deleteIthFighterHistory(i);
+        }
+    }
+}
+
+const historyCheckbox = document.getElementById("historyCheckbox");
+const allButton = document.getElementById("allButton");
+const unbanButton = document.getElementById("unbanButton");
+const deleteHistoryButton = document.getElementById("deleteHistoryButton");
 const resetButton = document.getElementById("resetButton");
+
+historyCheckbox.addEventListener("click", checkIfUseHistory);
+allButton.addEventListener("click", banAllFighters);
+unbanButton.addEventListener("click", unban);
+deleteHistoryButton.addEventListener("click", deleteHistory);
 resetButton.addEventListener("click", reset);

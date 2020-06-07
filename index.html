@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="css/stylesheet.css">
     <!-- font awesome -->
     <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
     <!-- lato font -->
@@ -69,12 +69,30 @@
 
                 <p class="button">
                     <button type="button" id="allButton">
-                        Ban All Fighters
+                        Ban All
+                    </button>
+                    <button type="button" id="unbanButton">
+                        Unban All
+                    </button>
+                    <button type="button" id="deleteHistoryButton">
+                        Delete History
                     </button>
                     <button type="button" id="resetButton">
-                        Reset
+                        Reset All
                     </button>
                 </p>
+
+                <p class="button">
+                    <input type="checkbox" id="historyCheckbox" value="Use Fighter History">
+                    Remove Fighters Used Once
+                    </input>
+                </p>
+
+                <div class="colorExplanation">
+                    <p class="pink">Banned</p>
+                    <p class="lightcyan">Used</p>
+                </div>
+
             </div>
 
             <div class="candidate">
@@ -98,7 +116,7 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
 </body>
 
 </html>
