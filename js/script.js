@@ -211,12 +211,11 @@ const makeFighterBox = (i) => {
     fighterBox.appendChild(p);
     fighterBox.classList.add("fighterBox");
 
-    fighterBoxes.push(fighterBox);
-
     return fighterBox
 }
 
 // 初期化
+const frag = document.createDocumentFragment();
 for (let i = 0; i < numFighters; i++) {
     const li = document.createElement("li");
 
@@ -234,8 +233,12 @@ for (let i = 0; i < numFighters; i++) {
     });
 
     li.appendChild(fighterBox);
-    candidate.appendChild(li);
+    fighterBoxes.push(fighterBox);
+
+    // document fragment に一時的に保存
+    frag.appendChild(li);
 }
+candidate.appendChild(frag);
 
 // buttonがクリックされた時にキャラクターを選ぶ
 const randomButton = document.getElementById("randomButton");
