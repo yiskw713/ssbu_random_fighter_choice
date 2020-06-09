@@ -89,6 +89,7 @@
 }
 
 .fighterList {
+    margin: 0 auto;
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -103,6 +104,10 @@
     padding: 0px 8px 5px 8px;
     margin: 2px;
     transition: 0.8s;
+    
+    p {
+        font-size: 11px;
+    }
 }
 
 .imgBox {

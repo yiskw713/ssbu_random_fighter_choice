@@ -1,171 +1,7 @@
 // 厳密なエラーチェック
 "use strict";
 
-const fighters = [
-    "mario",
-    "donkey_kong",
-    "link",
-    "samus",
-    "dark_samus",
-    "yoshi",
-    "kirby",
-    "fox",
-    "pikachu",
-    "luigi",
-    "ness",
-    "captain_falcon",
-    "jigglypuff",
-    "peach",
-    "daisy",
-    "bowser",
-    "ice_climbers",
-    "sheik",
-    "zelda",
-    "dr_mario",
-    "pichu",
-    "falco",
-    "marth",
-    "lucina",
-    "young_link",
-    "ganondorf",
-    "mewtwo",
-    "roy",
-    "chrom",
-    "mr_game_and_watch",
-    "meta_knight",
-    "pit",
-    "dark_pit",
-    "zero_suit_samus",
-    "wario",
-    "snake",
-    "ike",
-    "pokemon_trainer",
-    "diddy_kong",
-    "lucas",
-    "sonic",
-    "king_dedede",
-    "olimar",
-    "lucario",
-    "rob",
-    "toon_link",
-    "wolf",
-    "villager",
-    "mega_man",
-    "wii_fit_trainer",
-    "rosalina_and_luma",
-    "little_mac",
-    "greninja",
-    "mii_brawler",
-    "mii_swordfighter",
-    "mii_gunner",
-    "palutena",
-    "pac_man",
-    "robin",
-    "shulk",
-    "bowser_jr",
-    "duck_hunt",
-    "ryu",
-    "ken",
-    "cloud",
-    "corrin",
-    "bayonetta",
-    "inkling",
-    "ridley",
-    "simon",
-    "richter",
-    "king_k_rool",
-    "isabelle",
-    "incineroar",
-    "piranha_plant",
-    "joker",
-    "hero",
-    "banjo_and_kazooie",
-    "terry",
-    "byleth"
-]
-
-const displayName = [
-    "mario",
-    "donkey kong",
-    "link",
-    "samus",
-    "dark samus",
-    "yoshi",
-    "kirby",
-    "fox",
-    "pikachu",
-    "luigi",
-    "ness",
-    "captain falcon",
-    "jigglypuff",
-    "peach",
-    "daisy",
-    "bowser",
-    "ice climbers",
-    "sheik",
-    "zelda",
-    "dr. mario",
-    "pichu",
-    "falco",
-    "marth",
-    "lucina",
-    "young link",
-    "ganondorf",
-    "mewtwo",
-    "roy",
-    "chrom",
-    "mr. game & watch",
-    "meta knight",
-    "pit",
-    "dark pit",
-    "zero suit samus",
-    "wario",
-    "snake",
-    "ike",
-    "pokemon trainer",
-    "diddy kong",
-    "lucas",
-    "sonic",
-    "king dedede",
-    "olimar",
-    "lucario",
-    "rob",
-    "toon link",
-    "wolf",
-    "villager",
-    "mega man",
-    "wii fit trainer",
-    "rosalina & luma",
-    "little mac",
-    "greninja",
-    "mii brawler",
-    "mii swordfighter",
-    "mii gunner",
-    "palutena",
-    "pac man",
-    "robin",
-    "shulk",
-    "bowser jr.",
-    "duck hunt",
-    "ryu",
-    "ken",
-    "cloud",
-    "corrin",
-    "bayonetta",
-    "inkling",
-    "ridley",
-    "simon",
-    "richter",
-    "king k. rool",
-    "isabelle",
-    "incineroar",
-    "piranha plant",
-    "joker",
-    "hero",
-    "banjo & kazooie",
-    "terry",
-    "byleth"
-]
+import { fighters, displayNameEn, displayNameJp } from "./fighter.js";
 
 const numFighters = fighters.length;
 const candidate = document.getElementById("candidateList");
@@ -204,7 +40,11 @@ const makeFighterBox = (i) => {
 
     // fighter名の追加
     const p = document.createElement("p");
-    p.textContent = displayName[i].toUpperCase();
+    if (getFileName() === "index_en.html") {
+        p.textContent = displayNameEn[i].toUpperCase();
+    } else {
+        p.textContent = displayNameJp[i];
+    }
     p.classList.add("nameBox");
 
     fighterBox.appendChild(imgDiv)
@@ -301,6 +141,9 @@ randomButton.addEventListener("click", () => {
         return;
     }
 
+    // 一時的に保存する場所
+    const frag = document.createDocumentFragment();
+
     while (selectedFighters.length < numSelectedFighters) {
         const i = Math.floor(Math.random() * numFighters);
         if (useHistory) {
@@ -310,7 +153,7 @@ randomButton.addEventListener("click", () => {
                 // キャラクタボックスを作成
                 const fighterBox = makeFighterBox(i);
 
-                result.appendChild(fighterBox);
+                frag.appendChild(fighterBox);
 
                 // 決定済みキャラに追加
                 selectedFighters.push(i);
@@ -327,7 +170,7 @@ randomButton.addEventListener("click", () => {
                 // キャラクタボックスを作成
                 const fighterBox = makeFighterBox(i);
 
-                result.appendChild(fighterBox);
+                frag.appendChild(fighterBox);
 
                 // 決定済みキャラに追加
                 selectedFighters.push(i);
@@ -337,6 +180,8 @@ randomButton.addEventListener("click", () => {
             }
         }
     }
+
+    result.appendChild(frag);
 
     // cookieを保存
     setCookie();
