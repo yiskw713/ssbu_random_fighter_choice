@@ -97,6 +97,8 @@ window.addEventListener("DOMContentLoaded", () => {
         frag.appendChild(li);
     }
     candidate.appendChild(frag);
+
+    getCookie();
 })
 
 // キャラが選択できない時にアラートを出す．
@@ -381,7 +383,6 @@ const unbanButton = document.getElementById("unbanButton");
 const deleteHistoryButton = document.getElementById("deleteHistoryButton");
 const resetButton = document.getElementById("resetButton");
 
-getCookie();
 historyCheckbox.addEventListener("click", checkIfUseHistory);
 allButton.addEventListener("click", banAllFighters);
 unbanButton.addEventListener("click", unbanAllFighters);
