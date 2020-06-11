@@ -35,7 +35,7 @@
 
 /* button */
 .radio {
-  margin: 0px auto;
+  margin: 5px auto;
   text-align: center;
   font-size: 16px;
   padding: 10px 0px;
@@ -43,13 +43,17 @@
 
 .button {
   margin: 5px auto;
-  background-color: white;
   text-align: center;
   padding: 5px 0px;
   height: 32px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 
 .button button {
+  border: grey 0.5px solid;
+  padding: 1px 5px;
   margin: 0 20px;
   font-size: 16px;
 }
@@ -68,8 +72,8 @@
 }
 
 .colorExplanation p {
-  width: 60px;
-  margin: 5px 20px;
+  width: 70px;
+  margin: 5px 20px 10px 20px;
   padding: 5px 5px;
   font-size: 16px;
   text-align: center;
@@ -108,7 +112,7 @@
 /* キャラアイコンをいれるボックス */
 .fighterBox {
   width: 100px;
-  height: 120px;
+  height: 110px;
   text-align: center;
   padding: 0px 8px 5px 8px;
   margin: 2px;
@@ -117,12 +121,13 @@
 }
 
 .fighterBox p {
+  height: 20%;
   font-size: 11px;
 }
 
 .imgBox {
   width: 100%;
-  height: 80%;
+  height: 70%;
   cursor: pointer;
   -webkit-transition: 1.0s;
   transition: 1.0s;
@@ -142,7 +147,8 @@
 
 .nameBox {
   margin: 0 auto;
-  padding-bottom: 10px;
+  width: 100%;
+  padding: 5px 0px;
   height: 24px;
   line-height: 12px;
   text-align: center;

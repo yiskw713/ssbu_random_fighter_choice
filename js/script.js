@@ -9,6 +9,9 @@ let bannedFighters = new Set();
 let usedFighters = new Set();
 let useHistory = false;
 
+// buttonがクリックされた時にキャラクターを選ぶ
+const randomButton = document.getElementById("randomButton");
+
 // キャラクタボックスの配列
 const fighterBoxes = [];
 
@@ -21,6 +24,7 @@ const getFileName = () => {
 }
 
 // i番目のキャラクターボックスを作成
+// i=-1のときを含まない場合は空のキャラクタボックスを作成
 const makeFighterBox = (i) => {
     // 全体
     const fighterBox = document.createElement("div");
@@ -28,22 +32,26 @@ const makeFighterBox = (i) => {
     // 画像をいれる
     const imgDiv = document.createElement("div");
 
-    const img = document.createElement("img");
-    // 画像のパス
-    img.src = "./icon_imgs/" + fighters[i] + ".png";
-
-    // 画像を追加
-    imgDiv.appendChild(img);
+    // 空のボックスを作る場合はここは処理しない
+    if (i !== -1) {
+        const img = document.createElement("img");
+        // 画像のパス
+        img.src = "./icon_imgs/" + fighters[i] + ".png";
+        // 画像を追加
+        imgDiv.appendChild(img);
+    }
 
     // クラスの付与
     imgDiv.classList.add("imgBox")
 
     // fighter名の追加
     const p = document.createElement("p");
-    if (getFileName() === "index_en.html") {
-        p.textContent = displayNameEn[i].toUpperCase();
-    } else {
-        p.textContent = displayNameJp[i];
+    if (i !== -1) {
+        if (getFileName() === "index_en.html") {
+            p.textContent = displayNameEn[i].toUpperCase();
+        } else {
+            p.textContent = displayNameJp[i];
+        }
     }
     p.classList.add("nameBox");
 
@@ -55,33 +63,41 @@ const makeFighterBox = (i) => {
 }
 
 // 初期化
-const frag = document.createDocumentFragment();
-for (let i = 0; i < numFighters; i++) {
-    const li = document.createElement("li");
-
-    const fighterBox = makeFighterBox(i);
-
-    // クリックしたら色をつける
-    fighterBox.addEventListener("click", () => {
-        if (fighterBox.classList.contains("clicked")) {
-            fighterBox.classList.remove("clicked");
-            bannedFighters.delete(i);
-        } else {
-            fighterBox.classList.add("clicked");
-            bannedFighters.add(i);
+window.addEventListener("DOMContentLoaded", () => {
+    const frag = document.createDocumentFragment();
+    for (let i = -1; i < numFighters; i++) {
+        // 結果の一覧に追加 (レイアウト維持のため)
+        if (i === -1) {
+            const result = document.getElementById("resultList");
+            const li = document.createElement("li");
+            const fighterBox = makeFighterBox(-1);
+            li.appendChild(fighterBox);
+            result.appendChild(li);
+            continue;
         }
-    });
+        const li = document.createElement("li");
 
-    li.appendChild(fighterBox);
-    fighterBoxes.push(fighterBox);
+        const fighterBox = makeFighterBox(i);
 
-    // document fragment に一時的に保存
-    frag.appendChild(li);
-}
-candidate.appendChild(frag);
+        // クリックしたら色をつける
+        fighterBox.addEventListener("click", () => {
+            if (fighterBox.classList.contains("clicked")) {
+                fighterBox.classList.remove("clicked");
+                bannedFighters.delete(i);
+            } else {
+                fighterBox.classList.add("clicked");
+                bannedFighters.add(i);
+            }
+        });
 
-// buttonがクリックされた時にキャラクターを選ぶ
-const randomButton = document.getElementById("randomButton");
+        li.appendChild(fighterBox);
+        fighterBoxes.push(fighterBox);
+
+        // document fragment に一時的に保存
+        frag.appendChild(li);
+    }
+    candidate.appendChild(frag);
+})
 
 // キャラが選択できない時にアラートを出す．
 const alertWhenUnavaliable = (numSelectedFighters, numAvailable) => {
@@ -138,6 +154,12 @@ randomButton.addEventListener("click", () => {
 
     if (numAvailable < numSelectedFighters) {
         alertWhenUnavaliable(numSelectedFighters, numAvailable);
+        // 結果の一覧に追加 (レイアウト維持のため)
+        const result = document.getElementById("resultList");
+        const li = document.createElement("li");
+        const fighterBox = makeFighterBox(-1);
+        li.appendChild(fighterBox);
+        result.appendChild(li);
         return;
     }
 
