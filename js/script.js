@@ -345,6 +345,7 @@ const setCookie = () => {
     document.cookie = "banned=" + valueBanned + "; ";
     document.cookie = "used=" + valueUsed + "; ";
     document.cookie = "max-age=" + maxAge + "; ";
+    document.cookie = "secure;"
 }
 
 const getCookie = () => {
